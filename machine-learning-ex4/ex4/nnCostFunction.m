@@ -83,10 +83,11 @@ Theta2_grad = zeros(size(Theta2));
     JNoReg = (-1 / m) * sum(sum(y2.*log(hx) + (1 - y2).*log(1 - hx))); %cost without regularization
     
 %-------- start reg-------------------
-    Theta1NoBias = Theta1(:, 2:end);  % Theta1NoBias is 25 x 400
-    Theta2NoBias = Theta2(: ,2:end);   % Theta2NoBias is 10 x 25
-   
-    regTerm = (lambda / (2 * m))*(sum(sum((Theta1NoBias.^2)))+sum(sum((Theta2NoBias.^2)))) ;
+    
+    Theta1ZeroBias = [ zeros(size(Theta1, 1), 1) Theta1(: , 2:end) ];
+    Theta2ZeroBias = [ zeros(size(Theta2, 1), 1) Theta2(: , 2:end) ];
+    
+    regTerm = (lambda / (2 * m))*(sum(sum((Theta1ZeroBias.^2)))+sum(sum((Theta2ZeroBias.^2)))) ;
     
     J = JNoReg + regTerm;
 
@@ -112,8 +113,6 @@ for t = 1:m
     
 endfor
 
-  Theta1ZeroBias = [ zeros(size(Theta1, 1), 1) Theta1NoBias ];
-  Theta2ZeroBias = [ zeros(size(Theta2, 1), 1) Theta2NoBias ];
     Theta1_grad = (1/m) * Delta1 + (lambda / m) * Theta1ZeroBias;
     Theta2_grad = (1/m) * Delta2 + (lambda / m) * Theta2ZeroBias;
 % =========================================================================
